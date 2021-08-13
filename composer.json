@@ -1,0 +1,19 @@
+{
+    "name": "farhad_alipour/darcob_jobscheduler",
+    "type": "library",
+    "description": "PHP job scheduler",
+    "keywords": [
+        "scheduler"
+    ],
+    "homepage": "https://github.com/farhad-alipour/PhpJobScheduler/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "farhad_alipour",
+            "email": "farhadalipour98@gmail.com"
+        }
+    ],
+    "require": {
+        "php" : ">=7.4"
+    }
+}

@@ -25,17 +25,17 @@ interface ScheduleInterface
     public function getErrorLists();
 
 
-    public function everyMinute($minute);
+    public function everyMinute($minute , $from_year = null ,$from_month = null , $from_day = null , $from_hour = null , $from_minute = null);
 
-    public function everyHour($hour);
+    public function everyHour($hour , $from_year = null ,$from_month = null , $from_day = null , $from_hour = null , $from_minute = null);
 
-    public function hour($hour);
+    public function everyDay($hour = null , $minute = null);
 
-    public function minute($minute = 00);
+    public function everyWeek(array $days , $hour = null , $minute = null);
 
-    public function day();
+    public function everyMonth(array $days , $hour = null , $minute = null);
 
-    public function month();
+    public function everyYear(array $monthsAndDays , $hour = null , $minute = null);
 
 
     public function onDateAndTime($timestamp);

@@ -7,4 +7,5 @@
         $myfile = fopen("../../test_file.txt", "w");
         $txt = date("H:i:s") . "\n";
         fwrite($myfile, $txt);
-        fclose($myfile);    });
+        fclose($myfile);
+    })->;

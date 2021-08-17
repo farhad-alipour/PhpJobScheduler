@@ -11,6 +11,12 @@ class Schedule implements ScheduleInterface
 
     protected $before_callback;
 
+    protected array $schedule_errors = [];
+
+    protected string $timezone = "Asia/Tehran";
+
+    protected int $run_time = 0;
+
     protected bool $job_status = false;
 
     protected int $day = -1;
@@ -22,35 +28,60 @@ class Schedule implements ScheduleInterface
     protected  int $minute = -1;
 
 
+    /**
+     * Schedule constructor.
+     */
+    public function __construct()
+    {
+        if(!isset($GLOBALS['ScheduleRunTime']))
+            $this->addScheduleError("global variable 'ScheduleRunTime' is not set , constructor");
+        elseif(!is_numeric($GLOBALS['ScheduleRunTime']))
+            $this->addScheduleError("global variable 'ScheduleRunTime' is not integer , constructor");
+        else
+            $this->run_time = $GLOBALS['ScheduleRunTime'];
+    }
+
     protected function getExecuteTime(){
 
     }
 
     /**
      * @param $function
-     * @return mixed
+     * @return $this
      */
-    public function job($function)
+    public function job($function): Schedule
     {
-        // TODO: Implement job() method.
+        if(is_callable($function))
+            $this->job_function = $function;
+        else
+            $this->addScheduleError("given parameter 'job' is not a function , method : job");
+        return $this;
     }
 
     /**
      * @param $function
-     * @return mixed
+     * @return $this
      */
-    public function after($function)
+    public function after($function): Schedule
     {
-        // TODO: Implement after() method.
+        if(is_callable($function))
+            $this->after_callback = $function;
+        else
+            $this->addScheduleError("given parameter 'job' is not a function , method : after");
+        return $this;
     }
 
     /**
      * @param $function
-     * @return mixed
+     * @return $this
      */
-    public function before($function)
+    public function before($function): Schedule
     {
-        // TODO: Implement before() method.
+        if(is_callable($function))
+            $this->before_callback = $function;
+        else
+            $this->addScheduleError("given parameter 'job' is not a function , method : before");
+        return $this;
     }
 
     /**
@@ -71,11 +102,16 @@ class Schedule implements ScheduleInterface
 
     /**
      * @param $timezone
-     * @return mixed
+     * @return $this
      */
-    public function setTimezone($timezone)
+    public function setTimezone($timezone): Schedule
     {
-        // TODO: Implement setTimezone() method.
+        $timezone_list = timezone_identifiers_list();
+        if(in_array($timezone,$timezone_list))
+            $this->timezone = $timezone;
+        else
+            $this->addScheduleError("given parameter 'timezone' is not a standard timezone . more help -> https://www.php.net/manual/en/timezones.php , method : timezone");
+        return $this;
     }
 
     /**
@@ -83,7 +119,10 @@ class Schedule implements ScheduleInterface
      */
     public function checkIsTrueSchedule()
     {
-        // TODO: Implement checkIsTrueSchedule() method.
+        /*if(empty($this->schedule_errors))
+            return true;
+        else
+            return false;*/
     }
 
     /**
@@ -105,11 +144,11 @@ class Schedule implements ScheduleInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getErrorLists()
+    public function getErrorLists(): array
     {
-        // TODO: Implement getErrorLists() method.
+        return array_reverse($this->schedule_errors);
     }
 
     /**
@@ -132,36 +171,68 @@ class Schedule implements ScheduleInterface
 
     /**
      * @param $hour
-     * @return mixed
+     * @return $this
      */
-    public function hour($hour)
+    public function hour($hour): Schedule
     {
-        // TODO: Implement hour() method.
+        if(!is_numeric($hour))
+            $this->addScheduleError("given parameter 'hour' is not integer , method : hour");
+        elseif(strlen($hour) != 2)
+            $this->addScheduleError("given parameter 'hour' length is less than 2 . Examples -> 12,23,00,05 , method : hour");
+        elseif($hour < 0 || $hour > 23)
+            $this->addScheduleError("given parameter 'hour' is not between 00 and 23 , method : hour");
+        else
+            $this->hour = $hour;
+        return $this;
     }
 
     /**
      * @param int $minute
-     * @return mixed
+     * @return $this
      */
-    public function minute($minute = 00)
+    public function minute($minute = 00): Schedule
     {
-        // TODO: Implement minute() method.
+        if(!is_numeric($minute))
+            $this->addScheduleError("given parameter 'minute' is not integer , method : minute");
+        elseif(strlen($minute) != 2)
+            $this->addScheduleError("given parameter 'minute' length is less than 2 . Examples -> 53,30,09,03 , method : minute");
+        elseif($minute < 0 || $minute > 59)
+            $this->addScheduleError("given parameter 'minute' is not between 00 and 59 , method : minute");
+        else
+            $this->minute = $minute;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return $this
      */
-    public function day()
+    public function day($day): Schedule
     {
-        // TODO: Implement day() method.
+        if(!is_numeric($day))
+            $this->addScheduleError("given parameter 'day' is not integer , method : day");
+        elseif(strlen($day) != 2)
+            $this->addScheduleError("given parameter 'day' length is less than 2 . Examples -> 05,29,09,11 , method : day");
+        elseif($day < 1 || $day > 31)
+            $this->addScheduleError("given parameter 'day' is not between 01 and 31 , method : day");
+        else
+            $this->day = $day;
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return $this
      */
-    public function month()
+    public function month($month): Schedule
     {
-        // TODO: Implement month() method.
+        if(!is_numeric($month))
+            $this->addScheduleError("given parameter 'month' is not integer , method : month");
+        elseif(strlen($month) != 2)
+            $this->addScheduleError("given parameter 'month' length is less than 2 . Examples -> 05,03,09,12 , method : month");
+        elseif($month < 1 || $month > 12)
+            $this->addScheduleError("given parameter 'month' is not between 01 and 12 , method : month");
+        else
+            $this->month = $month;
+        return $this;
     }
 
     /**
@@ -234,5 +305,10 @@ class Schedule implements ScheduleInterface
     public function between($start_hour, $start_minute, $end_hour, $end_minute)
     {
         // TODO: Implement between() method.
+    }
+
+    private function addScheduleError(string $message)
+    {
+        $this->schedule_errors[count($this->schedule_errors)] = $message;
     }
 }

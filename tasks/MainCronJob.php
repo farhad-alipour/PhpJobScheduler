@@ -8,12 +8,13 @@ $job->setUniqueName("TestTask-1");
 $x = 0;
 $job->job(function () use ($x){
 
+    $a = 12/$x;
     echo "my job";
 });
 
 $job->onErrorListener(function (){
     echo "Error";
-});
+},true);
 
 //$job->between("09","30","15","00");
 //$job->between("10","30","18","30","1400","08","12","1403","10","13");

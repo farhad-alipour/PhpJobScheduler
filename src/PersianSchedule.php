@@ -19,6 +19,8 @@ class PersianSchedule implements ScheduleInterface
 
     protected string $timezone = "Asia/Tehran";
 
+    protected bool $output_error_status = false;
+
     protected bool $error_handler_status = false;
 
     protected bool $prevent_overlapping_status = false;
@@ -119,10 +121,12 @@ class PersianSchedule implements ScheduleInterface
 
     /**
      * @param closure $function
+     * @param bool $output_error
      * @return $this
      */
-    public function onErrorListener(Closure $function): PersianSchedule
+    public function onErrorListener(Closure $function, bool $output_error = false): PersianSchedule
     {
+        $this->output_error_status = true;
         if(is_callable($function))
             $this->on_error_callback = $function;
         else
@@ -210,6 +214,10 @@ class PersianSchedule implements ScheduleInterface
                                 if($this->on_error_callback != null && $this->error_handler_status == false){
                                     $this->error_handler_status = true;
                                     call_user_func($this->on_error_callback);
+
+                                    if($this->output_error_status)
+                                        echo "Error Message : " . $errstr . "\n" . "in file : " . $errfile . "\n" . "in line : " . $errline;
+
                                     if($this->prevent_overlapping_status)
                                         $this->lock("unlock");
                                 }

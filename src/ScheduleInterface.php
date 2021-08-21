@@ -8,7 +8,7 @@ interface ScheduleInterface
 {
     public function job(closure $function);
 
-    public function onErrorListener(closure $function);
+    public function onErrorListener(closure $function, bool $output_error = false);
 
     public function preventOverlapping(int $max_minute);
 

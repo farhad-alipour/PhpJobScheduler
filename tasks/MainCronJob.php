@@ -1,5 +1,5 @@
 <?php
-use main_core\PersianSchedule;
+use darcob_jobscheduler\PersianSchedule;
 
 $job = new PersianSchedule();
 

@@ -1,6 +1,6 @@
 <?php
 
-use main_core\JobRunner;
+use darcob_jobscheduler\JobRunner;
 
 require __DIR__ . '/vendor/autoload.php';
 

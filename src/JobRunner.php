@@ -1,6 +1,6 @@
 <?php
 
-namespace main_core;
+namespace darcob_jobscheduler;
 
 
 class JobRunner

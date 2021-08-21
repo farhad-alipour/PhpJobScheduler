@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "main_core\\":"src/"
+            "darcob_jobscheduler\\":"src/"
         },
         "files": ["src/lib/jdf.php"]
     }

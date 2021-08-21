@@ -7,8 +7,6 @@ class JobRunner
 {
     protected string $path = "tasks/";
 
-    protected string $store_path_prevent_overlapping = "lockfiles/";
-
     protected string $timezone = "Asia/Tehran";
 
     protected array $execute_results = [];

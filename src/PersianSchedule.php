@@ -152,7 +152,8 @@ class PersianSchedule implements ScheduleInterface
 
     protected function lock(string $process): void
     {
-        $name = "lockfiles/" . $this->unique_name . ".txt";
+        $base_path = dirname(__FILE__);
+        $name = $base_path . "/lockfiles/" . $this->unique_name . ".txt";
 
         if($process == "lock") {
             $file = fopen($name, "w");
@@ -168,7 +169,9 @@ class PersianSchedule implements ScheduleInterface
 
     protected function lockStatus(): bool
     {
-        $name = "lockfiles/" . $this->unique_name . ".txt";
+        $base_path = dirname(__FILE__);
+        $name = $base_path . "/lockfiles/" . $this->unique_name . ".txt";
+
         if($this->prevent_overlapping_status){
             if(file_exists($name)){
                 $file = fopen($name, "r");

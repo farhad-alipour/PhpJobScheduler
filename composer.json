@@ -5,6 +5,7 @@
     "keywords": [
         "scheduler"
     ],
+    "minimum-stability": "dev",
     "homepage": "https://github.com/farhad-alipour/PhpJobScheduler/",
     "license": "MIT",
     "authors": [

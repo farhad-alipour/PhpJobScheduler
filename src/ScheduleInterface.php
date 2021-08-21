@@ -2,15 +2,15 @@
 
 namespace main_core;
 
+use Closure;
+
 interface ScheduleInterface
 {
-    public function job($function);
+    public function job(closure $function);
 
-    public function after($function);
+    public function onErrorListener(closure $function);
 
-    public function before($function);
-
-    public function when();
+    public function preventOverlapping(int $max_minute);
 
     public function addJob();
 
@@ -20,38 +20,30 @@ interface ScheduleInterface
 
     public function getExecuteExamples(int $count);
 
-    public function getNextExecuteTime($output_type = "timestamp");
+    public function getNextExecuteTime();
 
     public function getErrorLists();
 
 
-    public function everyMinute($minute , $from_year = null ,$from_month = null , $from_day = null , $from_hour = null , $from_minute = null);
+    public function everyMinute(int $n_minute);
 
-    public function everyHour($hour , $from_year = null ,$from_month = null , $from_day = null , $from_hour = null , $from_minute = null);
+    public function everyHour(int $n_hour);
 
-    public function everyDay($hour = null , $minute = null);
+    public function everyDay(string $hour, string $minute);
 
-    public function everyWeek(array $days , $hour = null , $minute = null);
+    public function everyWeek(array $days_of_week, string $hour, string $minute);
 
-    public function everyMonth(array $days , $hour = null , $minute = null);
+    public function everyMonth(array $days, string $hour, string $minute);
 
-    public function everyYear(array $monthsAndDays , $hour = null , $minute = null);
+    public function everyYear(array $months, array $days, string $hour, string $minute);
+
+    public function onDateAndTime(string $year, string $month, string $day, string $hour, string $minute);
 
 
-    public function onDateAndTime($timestamp);
+    public function fromDateAndTime(string $from_year, string $from_month, string $from_day, string $from_hour, string $from_minute);
 
-    public function daily();
+    public function toDateAndTime(string $to_year, string $to_month, string $to_day, string $to_hour, string $to_minute);
 
-    public function monthly();
-
-    public function yearly();
-
-    public function weekdays(array $day);
-
-    public function fromDateAndTime($timestamp);
-
-    public function toDateAndTime($timestamp);
-
-    public function between($start_hour,$start_minute,$end_hour,$end_minute);
+    public function between(string $start_hour, string $start_minute, string $end_hour, string $end_minute, string $start_year = null, string $start_month = null, string $start_day = null, string $end_year = null, string $end_month = null, string $end_day = null);
 
 }
